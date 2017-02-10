@@ -1,0 +1,30 @@
+body {
+	margin: 0;
+}
+
+#map {
+	margin-top: 56px;
+	position: fixed;
+	height: 93%;
+	width: 100%;
+}
+
+.leaflet-container .leaflet-control-mouseposition {
+    left: 100px;
+    bottom: -32px;
+}
+
+.geocoder-control.geocoder-control-expanded.leaflet-control {
+	margin-left: 50px;
+	position: inherit;
+}
+
+.leaflet-touch .geocoder-control-input {
+    height: 34px;
+    line-height: 34px;
+    background-size: 30px;
+}
+
+.leaflet-control-styleeditor{
+	visibility: hidden;
+}
