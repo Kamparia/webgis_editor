@@ -28,3 +28,7 @@ body {
 .leaflet-control-styleeditor{
 	visibility: hidden;
 }
+
+.easy-button-button {
+	font-size: 16px;
+}

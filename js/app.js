@@ -14,15 +14,16 @@ function init(){
 	});
 	
 	map_scale(); 
+	map_geolocate();
+	load_file();		
+	save_draw();
 	mouse_position(); 
 	Measure();
 	map_geocoder(); 
 	map_draw();
-	map_geolocate();
 	basemaps();
-	load_file();
+
 	style_editor();
-	//map_print();
 }
 
 function map_geocoder() {
@@ -91,7 +92,7 @@ function Measure() {
 
 function map_draw() {
 	// Initialize the FeatureGroup to store editable layers
-	var drawnItems = new L.FeatureGroup();
+	drawnItems = new L.FeatureGroup();
 	map.addLayer(drawnItems);
 
 	// Initialize the draw control and pass it the FeatureGroup of editable layers
@@ -192,16 +193,18 @@ function style_editor() {
 
 }
 
-function map_print() {
-	var printProvider = L.print.provider({
-	   method: 'GET',
-	   url: ' http://path/to/mapfish/print',
-	   autoLoad: true,
-	   dpi: 90
-	});
-
-	var printControl = L.control.print({
-	   provider: printProvider
-	});        
-	map.addControl(printControl);
+function save_draw() {
+	L.easyButton({
+	  states:[
+	    {
+			icon: 'fa-cloud-download',
+			title:     'Save drawn items',
+			onClick: function(btn, map, drawnItems) {
+				var blob = new Blob([ JSON.stringify(drawnItems.toGeoJSON())], {type: "text/plain;charset=utf-8"});
+				saveAs(blob, "map.geojson");
+				console.log('Hello WOrld');
+			}		
+	    }
+	  ]
+	}).addTo(map);
 }
