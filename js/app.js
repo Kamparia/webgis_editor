@@ -142,9 +142,13 @@ function map_draw() {
 
 function map_geolocate(){
 	var locate_control = L.control.locate({
+		icon: 'fa fa-compass',
 	    strings: {
-	        title: "Show me where I am, yo!"
-	    }
+	        title: "Show me where I am!"
+	    },
+		locateOptions: {
+		    maxZoom: 20
+		}	    
 	}).addTo(map);	
 }
 

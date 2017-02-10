@@ -32,3 +32,7 @@ body {
 .easy-button-button {
 	font-size: 16px;
 }
+
+.leaflet-control-locate {
+	font-size: 18px;
+}
