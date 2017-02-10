@@ -16,13 +16,14 @@ function init(){
 	map_scale(); 
 	map_geolocate();
 	load_file();		
-	save_draw();
+	save_draw(map, drawnItems);
 	mouse_position(); 
 	Measure();
 	map_geocoder(); 
 	map_draw();
 	basemaps();
-
+	save_image();
+	map_print();
 	style_editor();
 }
 
@@ -57,16 +58,16 @@ function basemaps() {
 	var api_key = 'pk.eyJ1IjoiZGlnaXRhbGdsb2JlIiwiYSI6ImNpdm9ic3M2ODAwdDYydXBjYW85aHVzeTMifQ.Y2J4i_b6yGPmNkJAoUHDMg';
 	var basemaps = [
 	    // Custom base layer map - OSM
-	    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
-	        label: 'OpenStreetMap'
-	    }),
 	    L.tileLayer('https://{s}.tiles.mapbox.com/v4/digitalglobe.nal0mpda/{z}/{x}/{y}.png?access_token=' + api_key, {
 	        minZoom: 1,
 	        maxZoom: 19,
 	        attribution: '(c) <a href="http://microsites.digitalglobe.com/interactive/basemap_vivid/">DigitalGlobe</a> , (c) OpenStreetMap, (c) Mapbox',
 	        label: 'Digital Globe Imagery'
 	    }),
+	    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+	        label: 'OpenStreetMap'
+	    }),	    
 	    L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
 	        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey and the GIS User Community',
 	        label: 'ESRI Terrain'
@@ -126,7 +127,7 @@ function map_draw() {
 	        // Do marker specific actions
 	    }
 
-	    // Do whatever else you need to. (save to db, add to map etc)
+	    // Do what//ever else you need to. (save to db, add to map etc)
 	    drawnItems.addLayer(layer);
 	});
 
@@ -197,16 +198,48 @@ function style_editor() {
 
 }
 
+function save_geojson(){
+	var data = JSON.stringify(drawnItems.toGeoJSON());
+	var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+	saveAs(blob, "map.geojson");
+}
+
 function save_draw() {
 	L.easyButton({
 	  states:[
 	    {
 			icon: 'fa-cloud-download',
-			title:     'Save drawn items',
-			onClick: function(btn, map, drawnItems) {
-				var blob = new Blob([ JSON.stringify(drawnItems.toGeoJSON())], {type: "text/plain;charset=utf-8"});
-				saveAs(blob, "map.geojson");
-				console.log('Hello WOrld');
+			title:     'Export Drawing to GeoJSON',
+			onClick: function(btn, map) {
+				save_geojson();
+			}		
+	    }
+	  ]
+	}).addTo(map);
+}
+
+function map_print() {
+	L.easyButton({
+	  states:[
+	    {
+			icon: 'fa-print',
+			title:     'Print Map',
+			onClick: function(btn, map) {
+
+			}		
+	    }
+	  ]
+	}).addTo(map);
+}
+
+function save_image() {
+	L.easyButton({
+	  states:[
+	    {
+			icon: 'fa-camera',
+			title: 'Save screenshot',
+			onClick: function(btn, map) {
+
 			}		
 	    }
 	  ]
