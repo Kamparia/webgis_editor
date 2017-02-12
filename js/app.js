@@ -22,8 +22,8 @@ function init(){
 	map_geocoder(); 
 	map_draw();
 	basemaps();
-	save_image();
-	map_print();
+	//save_image();
+	//map_print();
 	style_editor();
 }
 
@@ -222,10 +222,19 @@ function map_print() {
 	L.easyButton({
 	  states:[
 	    {
+			id: 'print_map',
+			stateName: 'print-map',
 			icon: 'fa-print',
 			title:     'Print Map',
 			onClick: function(btn, map) {
-
+				html2canvas(document.body, {
+					onrendered: function(canvas) {
+						var img = canvas.toDataURL("image/png");
+						var doc = new jsPDF();
+						doc.addImage(img, 'JPEG');
+						doc.save('test.pdf');
+					}
+				});
 			}		
 	    }
 	  ]
@@ -236,10 +245,19 @@ function save_image() {
 	L.easyButton({
 	  states:[
 	    {
+	    	id: 'save_screenshot',
+	    	stateName: 'save-screenshot',
 			icon: 'fa-camera',
 			title: 'Save screenshot',
 			onClick: function(btn, map) {
-
+				html2canvas(document.body, {
+					onrendered: function(canvas) {
+						var img = canvas.toDataURL("image/png");
+					}
+				});
+				img.toBlob(function(blob) {
+				    saveAs(blob, "pretty image.png");
+				});
 			}		
 	    }
 	  ]
